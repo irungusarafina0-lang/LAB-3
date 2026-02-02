@@ -1,0 +1,60 @@
+import random
+import time
+import matplotlib.pyplot as plt
+
+# Lists to store data
+temperature_data = []
+humidity_data = []
+time_steps = []
+
+csv_file = "environment_data.csv"
+txt_file = "environment_data.txt"
+
+# Number of readings
+readings = 10
+
+print("Starting Data Logging...\n")
+
+for i in range(readings):
+    try:
+        # Simulated sensor values
+        temperature = 25 + random.uniform(-2, 2)
+        humidity = 60 + random.uniform(-5, 5)
+
+        temperature_data.append(temperature)
+        humidity_data.append(humidity)
+        time_steps.append(i)
+
+        # Write to CSV file
+        with open(csv_file, "a") as csv:
+            csv.write(f"{i},{temperature:.2f},{humidity:.2f}\n")
+
+        # Write to TXT file
+        with open(txt_file, "a") as txt:
+            txt.write(f"Time: {i}s | Temp: {temperature:.2f}°C | Humidity: {humidity:.2f}%\n")
+
+        print(f"Logged -> Time: {i}s | Temp: {temperature:.2f}°C | Humidity: {humidity:.2f}%")
+
+        time.sleep(0.5)
+
+    except IOError:
+        print("File writing error occurred!")
+
+    except Exception as e:
+        print("Unexpected error:", e)
+
+# Plotting the data
+plt.figure(figsize=(8, 5))
+
+plt.plot(time_steps, temperature_data, marker='o', label="Temperature (°C)")
+plt.plot(time_steps, humidity_data, marker='s', label="Humidity (%)")
+
+plt.xlabel("Time (s)")
+plt.ylabel("Values")
+plt.title("Temperature and Humidity Log")
+plt.legend()
+plt.grid(True)
+
+plt.show()
+
+print("\nData logging and plotting completed successfully.")
